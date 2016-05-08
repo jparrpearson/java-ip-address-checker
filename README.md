@@ -1,4 +1,4 @@
-﻿# java-ip-address-checker
+# java-ip-address-checker
 
 This is a Java application that checks the external IP address using an online service.  Once the IP address has been found it is stored in a local file and optionally emailed to an email address.
 
@@ -25,8 +25,15 @@ gradle dist
 ## Usage
 
 After packaging the application, install and configure as follows:
+
 1. Unzip the distributable package to a folder of your choice
-2. Update the options in the properties file (`conf/ip-address-checker.properties`)
+2. Update the options, as described below, in the properties file (`conf/ip-address-checker.properties`)
+3. Run the application
+```
+java -jar java-ip-address-checker-1.0.jar
+```
+
+### Options
 
 | Property Name | Description |
 | --- | --- |
@@ -41,12 +48,7 @@ After packaging the application, install and configure as follows:
 | mail.subject | The subject to set on the email. |
 | last.address | The last IP address that was found and saved.  An email is only sent if the newly found IP address is different from the last one. |
 
-3. Run the application
-```
-java -jar java-ip-address-checker-1.0.jar
-```
-
-Note that most email providers have various limits on the use of their SMTP mail servers.  So it is not recommended to run the application too often.  A typical use case would be to install the application and make use of a scheduler, such as the Windows Task Scheduler, to run the application periodically.  There is a batch file, `run.bat`, included for this purpose.
+Note that most email providers have limits on the use of their SMTP mail servers.  So it is not recommended to run the application too often.  A typical use case would be to install the application and make use of a scheduler, such as the Windows Task Scheduler, to run the application periodically.  There is a batch file, `run.bat`, included for this purpose.
 
 ## License
 
