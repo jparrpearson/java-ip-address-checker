@@ -1,0 +1,54 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version = '1.0'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'commons-configuration:commons-configuration:1.10'
+    compile 'org.apache.commons:commons-email:1.4'
+    compile 'com.sun.mail:javax.mail:1.5.5'
+    testCompile 'junit:junit:4.12'
+}
+
+task prepare(type: Copy) {
+    description 'Fetches the needed runtime libraries and puts them in the lib directory.'
+    from configurations.runtime
+    into 'lib'
+}
+
+task compile(type: Jar, dependsOn: prepare) {
+    description 'Compiles and packages the application into a JAR.'
+    manifest {
+        attributes('Implementation-Title': 'IP Address Checker',
+            'Implementation-Version': version,
+            'Implementation-Vendor': 'Jeremy Parr-Pearson',
+            'Build-Time': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'Main-Class': 'ca.jparrpearson.net.IpAddressChecker',
+            'Class-Path': 'lib/activation-1.1.1.jar'
+                + ' lib/commons-configuration-1.10.jar'
+                + ' lib/commons-email-1.4.jar'
+                + ' lib/commons-lang-2.6.jar'
+                + ' lib/commons-logging-1.1.1.jar'
+                + ' lib/javax.mail-1.5.5.jar')
+    }
+    exclude 'conf'
+    with jar
+}
+
+task dist(type: Zip, dependsOn: compile) {
+    description 'Packages the application into a distribution package.'
+    from libsDir
+    from('src/main/resources') {
+        include 'run.bat'
+    }
+    from('lib') {
+        into 'lib'
+    }
+    from('src/main/resources/conf') {
+        into 'conf'
+    }
+}
